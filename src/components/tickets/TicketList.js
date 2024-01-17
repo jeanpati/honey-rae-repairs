@@ -2,11 +2,13 @@
 import { getAllTickets } from "../../services/ticketService"
 import "./Tickets.css"
 import { Ticket } from "./Ticket"
+import { TicketFilterBar } from "./TicketFilterBar"
 
 export const TicketList = () => {
     const [allTickets, setAllTickets] = useState([])
   const [showEmergencyOnly, setShowEmergencyOnly] = useState(false)
   const [filteredTickets, setFilteredTickets] = useState([])
+  const [searchTerm, setSearchTerm] = useState("")
 
   useEffect(() => { //the function is what we want to happen and the array is when we want it to happen
     getAllTickets().then((ticketsArray) => {
@@ -26,26 +28,20 @@ export const TicketList = () => {
     }
   }, [showEmergencyOnly, allTickets]) //will run whenever showEmergency changes
 
-
+useEffect(() => {
+    const foundTickets = allTickets.filter(ticket => 
+        ticket.description.toLowerCase().includes(searchTerm.toLowerCase())
+        )
+    setFilteredTickets(foundTickets)
+},[searchTerm, allTickets])
 
   return (
   <div className="tickets-container">
     <h2>Tickets</h2>
-    <div>
-      <button className="filter-btn btn-primary" 
-      onClick={() => {
-        setShowEmergencyOnly(true)
-        }}>Emergency
-        </button>
-      <button className="filter-btn btn-info" 
-      onClick={() => {
-        setShowEmergencyOnly(false)
-        }}>Show All
-        </button>
-    </div>
+    <TicketFilterBar setShowEmergencyOnly={setShowEmergencyOnly} setSearchTerm={setSearchTerm}/>
     <article className="tickets">
       {filteredTickets.map((ticketObj) => {
-        return <Ticket ticket={ticketObj} name="Joe" key={ticketObj.id}/> //the name attribute will show up under props and can be access via ticket.js
+        return <Ticket ticket={ticketObj} key={ticketObj.id}/> //the name attribute will show up under props and can be access via ticket.js
       })}
     </article>
   </div>

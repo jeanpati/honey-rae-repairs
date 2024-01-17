@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { getAllEmployees } from "../../services/employeeService"
 
-export const Ticket = ({ ticket, name }) => { // ticket is the props object, we destructured it to pull out the ticket key
+export const Ticket = ({ ticket }) => { // ticket is the props object, we destructured it to pull out the ticket key
     const [employees,setEmployees] = useState([])
     const [assignedEmployee, setAssignedEmployee] = useState({})
     
