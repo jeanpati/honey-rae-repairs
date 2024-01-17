@@ -1,6 +1,7 @@
  import { useEffect, useState } from "react"
 import { getAllTickets } from "../../services/ticketService"
 import "./Tickets.css"
+import { Ticket } from "./Ticket"
 
 export const TicketList = () => {
     const [allTickets, setAllTickets] = useState([])
@@ -43,19 +44,8 @@ export const TicketList = () => {
         </button>
     </div>
     <article className="tickets">
-      {filteredTickets.map((ticket) => {
-        return (
-          <section className="ticket" key={ticket.id}>
-          <header className="ticket-info">#{ticket.id}</header>
-          <div>{ticket.description}</div>
-          <footer>
-            <div>
-              <div className="ticket-into">Emergency</div>
-              <div>{ticket.emergency ? "yes" : "no"}</div>
-            </div>
-          </footer>
-          </section>
-        )
+      {filteredTickets.map((ticketObj) => {
+        return <Ticket ticket={ticketObj} name="Joe" key={ticketObj.id}/> //the name attribute will show up under props and can be access via ticket.js
       })}
     </article>
   </div>
