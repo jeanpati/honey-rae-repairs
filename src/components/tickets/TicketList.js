@@ -4,18 +4,21 @@ import "./Tickets.css";
 import { Ticket } from "./Ticket";
 import { TicketFilterBar } from "./TicketFilterBar";
 
-export const TicketList = () => {
+export const TicketList = ({ currentUser }) => {
   const [allTickets, setAllTickets] = useState([]);
   const [showEmergencyOnly, setShowEmergencyOnly] = useState(false);
   const [filteredTickets, setFilteredTickets] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
 
-  useEffect(() => {
-    //the function is what we want to happen and the array is when we want it to happen
+  const getAndSetTickets = () => {
     getAllTickets().then((ticketsArray) => {
       setAllTickets(ticketsArray);
     });
-  }, []); //ONLY runs on initial render of component (so we dont have an inifinite loop) when empty
+  };
+
+  useEffect(() => {
+    getAndSetTickets();
+  }, []);
 
   useEffect(() => {
     if (showEmergencyOnly) {
@@ -44,7 +47,14 @@ export const TicketList = () => {
       />
       <article className="tickets">
         {filteredTickets.map((ticketObj) => {
-          return <Ticket ticket={ticketObj} key={ticketObj.id} />; //the name attribute will show up under props and can be access via ticket.js
+          return (
+            <Ticket
+              ticket={ticketObj}
+              currentUser={currentUser}
+              getAndSetTickets={getAndSetTickets}
+              key={ticketObj.id}
+            />
+          ); //the name attribute will show up under props and can be access via ticket.js
         })}
       </article>
     </div>
