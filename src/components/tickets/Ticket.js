@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 import { getAllEmployees } from "../../services/employeeService";
-import { assignTicket, updateTicket } from "../../services/ticketService";
+import {
+  assignTicket,
+  deleteTicket,
+  updateTicket,
+} from "../../services/ticketService";
 
 export const Ticket = ({ ticket, currentUser, getAndSetTickets }) => {
   // ticket is the props object, we destructured it to pull out the ticket key
@@ -49,6 +53,12 @@ export const Ticket = ({ ticket, currentUser, getAndSetTickets }) => {
     });
   };
 
+  const handleDelete = () => {
+    deleteTicket(ticket.id).then(() => {
+      getAndSetTickets();
+    });
+  };
+
   return (
     //optional chaining operator - only use when something may be undefined and its expected, not just to fix issue
     <section className="ticket">
@@ -81,6 +91,15 @@ export const Ticket = ({ ticket, currentUser, getAndSetTickets }) => {
           !ticket.dateCompleted ? (
             <button className="btn btn-warning" onClick={handleClose}>
               Close
+            </button>
+          ) : (
+            ""
+          )}
+
+          {/*You could also use && instead of ? and delete ""*/}
+          {!currentUser.isStaff ? (
+            <button className="btn btn-warning" onClick={handleDelete}>
+              Delete
             </button>
           ) : (
             ""
