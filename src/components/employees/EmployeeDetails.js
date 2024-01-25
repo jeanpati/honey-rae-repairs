@@ -5,7 +5,7 @@ import { getEmployeeByUserId } from "../../services/employeeService";
 import("./EmployeeList.css");
 
 export const EmployeeDetails = () => {
-  const [employee, setEmployee] = useState([]);
+  const [employee, setEmployee] = useState({});
   const { employeeId } = useParams();
 
   useEffect(() => {
